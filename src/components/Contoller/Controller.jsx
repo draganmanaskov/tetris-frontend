@@ -1,37 +1,19 @@
 import React from "react";
+import { Action, actionForKey } from "../../business/Input";
+import { playerController } from "../../business/Controller/Controller";
+import { useInterval } from "../../hooks/useInterval";
 
-const Controller = ({ player, setPlayer }) => {
+const Controller = ({ board, player, setPlayer, resetPlayer }) => {
+  useInterval(() => {
+    playerController(Action.SlowDrop, board, player, setPlayer, resetPlayer);
+  }, 1000);
+
   const onKeyDown = (e) => {
     let tempPlayer = { ...player };
 
-    console.log(e.code);
-    if (e.code === "ArrowLeft") {
-      console.log(tempPlayer.position.column);
-      // if (tempPlayer.position.column == 0) {
-      //   return;
-      // }
-      tempPlayer.position.column -= 1;
-      setPlayer(tempPlayer);
-    }
+    let action = actionForKey(e.code);
 
-    if (e.code === "ArrowRight") {
-      console.log("et");
-      tempPlayer.position.column += 1;
-      setPlayer(tempPlayer);
-    }
-
-    if (e.code === "ArrowUp") {
-      console.log("et");
-      tempPlayer.position.row -= 1;
-      setPlayer(tempPlayer);
-    }
-
-    if (e.code === "ArrowDown") {
-      console.log("et");
-      tempPlayer.position.row += 1;
-      setPlayer(tempPlayer);
-    }
-    console.log(player);
+    playerController(action, board, player, setPlayer, resetPlayer);
   };
 
   const onKeyUp = () => {

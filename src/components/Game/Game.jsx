@@ -4,6 +4,7 @@ import Preview from "../Preview/Preview";
 import { usePlayer } from "../../hooks/usePlayer";
 import Controller from "../Contoller/Controller";
 import useBoard from "../../hooks/useBoard";
+import useSetDrop from "../../hooks/useSetDrop";
 
 const Game = ({ columns, rows }) => {
   const [player, setPlayer, resetPlayer] = usePlayer();
@@ -15,10 +16,11 @@ const Game = ({ columns, rows }) => {
     resetPlayer,
     addLinesCleared,
   });
+  useSetDrop(player, setPlayer);
 
-  useEffect(() => {
-    console.log(player);
-  }, [player]);
+  // useEffect(() => {
+  //   console.log(player);
+  // }, [player]);
 
   return (
     <div
@@ -26,7 +28,12 @@ const Game = ({ columns, rows }) => {
     >
       <Board board={board} />
       <Preview tetrominoes={player.tetrominoes} />
-      <Controller player={player} setPlayer={setPlayer} />
+      <Controller
+        board={board}
+        player={player}
+        setPlayer={setPlayer}
+        resetPlayer={resetPlayer}
+      />
     </div>
   );
 };

@@ -26,10 +26,26 @@ export const nextBoard = ({ board, player, resetPlayer, addLinesCleared }) => {
         if (cell === 1) {
           tempBoard[i + row][j + column].className = tetromino.className;
         }
-      } catch (error) {     
+      } catch (error) {
         return;
       }
     });
   });
   return tempBoard;
+};
+
+export const isWithinBoard = (position, board, shape) => {
+  for (let i = 0; i < shape.length; i++) {
+    let deltaRow = i + position.row;
+    for (let j = 0; j < shape[i].length; j++) {
+      if (shape[i][j]) {
+        let deltaColumn = j + position.column;
+        const isValidPosition = board[deltaRow] && board[deltaRow][deltaColumn];
+
+        if (!isValidPosition) return false;
+      }
+    }
+  }
+
+  return true;
 };
