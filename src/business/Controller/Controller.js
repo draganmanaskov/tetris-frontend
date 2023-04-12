@@ -1,4 +1,4 @@
-import { isWithinBoard } from "../Board/Board";
+import { isWithinBoard, hasColisionHandler } from "../Board/Board";
 import { Action } from "../Input";
 import { rotateTetromino } from "../Tetrominoes/Tetrominoes";
 
@@ -7,7 +7,8 @@ export const playerController = (
   board,
   player,
   setPlayer,
-  resetPlayer
+  setGameOver,
+  setGameStats
 ) => {
   let { position, tetromino } = player;
   let shape = [...tetromino.shape];
@@ -16,7 +17,15 @@ export const playerController = (
     attemptRotate(position, board, shape, player, setPlayer);
   } else {
     let newPosition = getPosition(action, position);
-    attemptMove(newPosition, board, shape, setPlayer, resetPlayer);
+    attemptMove(
+      newPosition,
+      board,
+      shape,
+      player,
+      setPlayer,
+      action,
+      setGameOver
+    );
   }
 };
 
@@ -24,23 +33,51 @@ export const attemptRotate = (position, board, shape, player, setPlayer) => {
   let newShape = rotateTetromino(shape);
 
   const isWithin = isWithinBoard(position, board, newShape);
-  if (isWithin) {
+  const hasColision = hasColisionHandler(position, board, newShape);
+
+  if (isWithin && !hasColision) {
     player.tetromino.shape = newShape;
     console.log(player.tetromino.shape);
     setPlayer({ ...player });
   }
 };
 
-export const attemptMove = (position, board, shape, setPlayer, resetPlayer) => {
+export const attemptMove = (
+  position,
+  board,
+  shape,
+  player,
+  setPlayer,
+  action,
+  setGameOver
+) => {
   const isWithin = isWithinBoard(position, board, shape);
-  if (isWithin) {
-    setPlayer((prevState) => ({ ...prevState, position }));
-  } else {
-    console.log(position);
-    if (position.row > 20 - shape.length) {
-      resetPlayer();
-    }
+  const hasColision = hasColisionHandler(position, board, shape);
+
+  const preventMove = !isWithin || (isWithin && hasColision);
+
+  const newPosition = preventMove ? player.position : position;
+  const isMovingDown = action === Action.SlowDrop;
+
+  const isHit = isMovingDown && (hasColision || !isWithin);
+
+  const isGameOver = isHit && player.position.row === 0;
+  if (isGameOver) {
+    setGameOver(isGameOver);
   }
+
+  setPlayer((prevState) => ({
+    ...prevState,
+    position: newPosition,
+    collided: isHit,
+  }));
+
+  // else {
+  //   console.log(position);
+  //   if (position.row > 20 - shape.length) {
+  //     setPlayer((prevState) => ({ ...prevState, collided: true }));
+  //   }
+  // }
 };
 
 export const getPosition = (action, position) => {
@@ -56,4 +93,13 @@ export const getPosition = (action, position) => {
   }
 
   return newPosition;
+};
+
+export const finalTetrominoPosition = (setPlayer) => {
+  setPlayer((prevState) => {
+    console.log(prevState);
+    return {
+      ...prevState,
+    };
+  });
 };

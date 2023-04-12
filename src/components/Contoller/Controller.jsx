@@ -1,19 +1,37 @@
-import React from "react";
+import { useRef, useEffect } from "react";
 import { Action, actionForKey } from "../../business/Input";
 import { playerController } from "../../business/Controller/Controller";
 import { useInterval } from "../../hooks/useInterval";
 
-const Controller = ({ board, player, setPlayer, resetPlayer }) => {
+const Controller = ({
+  board,
+  player,
+  setPlayer,
+  setGameOver,
+  isPaused,
+  pause,
+}) => {
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (!isPaused) {
+      inputRef.current.focus();
+    }
+  }, [isPaused]);
+
+  const handleBlur = (event) => {
+    pause(true);
+  };
+
+  let interval = !isPaused ? 1000 : null;
   useInterval(() => {
-    playerController(Action.SlowDrop, board, player, setPlayer, resetPlayer);
-  }, 1000);
+    playerController(Action.SlowDrop, board, player, setPlayer, setGameOver);
+  }, interval);
 
   const onKeyDown = (e) => {
-    let tempPlayer = { ...player };
-
     let action = actionForKey(e.code);
 
-    playerController(action, board, player, setPlayer, resetPlayer);
+    playerController(action, board, player, setPlayer, setGameOver);
   };
 
   const onKeyUp = () => {
@@ -26,7 +44,8 @@ const Controller = ({ board, player, setPlayer, resetPlayer }) => {
       type="text"
       onKeyDown={onKeyDown}
       onKeyUp={onKeyUp}
-      autoFocus
+      onBlur={handleBlur}
+      ref={inputRef}
     />
   );
 };

@@ -63,7 +63,7 @@ export const randomTetromino = () => {
   const keys = Object.keys(TETROMINOES);
   const index = Math.floor(Math.random() * keys.length);
   const key = keys[index];
-  return TETROMINOES[key];
+  return { ...TETROMINOES[key] };
 };
 
 export const transferToBoard = () => {};
@@ -78,4 +78,28 @@ export const rotateTetromino = (shape) => {
   });
 
   return temp;
+};
+
+export const placePieceOnBoard = (tetromino, newBoard, position, player) => {
+  const { row, column } = position;
+  const collided = player.collided;
+
+  tetromino.shape.forEach((rowArray, i) => {
+    rowArray.forEach((cell, j) => {
+      try {
+        if (newBoard[i + row][j + column].occupied) {
+          return;
+        }
+
+        if (cell === 1) {
+          newBoard[i + row][j + column] = {
+            occupied: collided,
+            className: tetromino.className,
+          };
+        }
+      } catch (error) {
+        return;
+      }
+    });
+  });
 };

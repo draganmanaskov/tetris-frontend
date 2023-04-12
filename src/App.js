@@ -1,7 +1,8 @@
 import Game from "./components/Game/Game";
+import Menu from "./components/Menu/Menu";
 
 function App() {
-  return <Game columns={10} rows={20} />;
+  return <Menu></Menu>;
 }
 
 export default App;

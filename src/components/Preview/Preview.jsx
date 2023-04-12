@@ -3,7 +3,7 @@ import PreviewBoard from "./PreviewBoard";
 
 const Preview = ({ tetrominoes }) => {
   const previewTetrominoes = tetrominoes
-    .slice(1 - tetrominoes.length)
+    .slice(3 - tetrominoes.length)
     .reverse();
 
   return (

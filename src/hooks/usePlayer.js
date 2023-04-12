@@ -4,7 +4,6 @@ import { randomTetromino } from "../business/Tetrominoes/Tetrominoes";
 
 const buildPlayer = (previous) => {
   let tetrominoes;
-
   if (previous) {
     tetrominoes = [...previous.tetrominoes];
     tetrominoes.unshift(randomTetromino());
