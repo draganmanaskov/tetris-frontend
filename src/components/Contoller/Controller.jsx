@@ -1,41 +1,16 @@
 import React from "react";
+import { isWithinBoard } from "../../business/Board/Board";
+import { playerConroler } from "../../business/Controller/Controller";
+import { actionForKey } from "../../business/Input";
 
-const Controller = ({ player, setPlayer }) => {
+const Controller = ({ board, player, setPlayer }) => {
   const onKeyDown = (e) => {
-    let tempPlayer = { ...player };
-
-    console.log(e.code);
-    if (e.code === "ArrowLeft") {
-      console.log(tempPlayer.position.column);
-      // if (tempPlayer.position.column == 0) {
-      //   return;
-      // }
-      tempPlayer.position.column -= 1;
-      setPlayer(tempPlayer);
-    }
-
-    if (e.code === "ArrowRight") {
-      console.log("et");
-      tempPlayer.position.column += 1;
-      setPlayer(tempPlayer);
-    }
-
-    if (e.code === "ArrowUp") {
-      console.log("et");
-      tempPlayer.position.row -= 1;
-      setPlayer(tempPlayer);
-    }
-
-    if (e.code === "ArrowDown") {
-      console.log("et");
-      tempPlayer.position.row += 1;
-      setPlayer(tempPlayer);
-    }
-    console.log(player);
+    const action = actionForKey(e.code);
+    playerConroler(board, player, action, setPlayer);
   };
 
   const onKeyUp = () => {
-    console.log("key up");
+    // console.log("key up");
   };
 
   return (

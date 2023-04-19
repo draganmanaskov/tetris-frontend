@@ -67,3 +67,12 @@ export const randomTetromino = () => {
 };
 
 export const transferToBoard = () => {};
+
+export const rotateTetromino = (shape) => {
+  let swapRowsCol = shape.map((row, i) => {
+    return shape.map((col) => col[i]);
+  });
+  let newShape = swapRowsCol.map((row) => row.reverse());
+
+  return newShape;
+};

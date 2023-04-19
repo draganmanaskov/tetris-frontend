@@ -16,9 +16,9 @@ const Game = ({ columns, rows }) => {
     addLinesCleared,
   });
 
-  useEffect(() => {
-    console.log(player);
-  }, [player]);
+  // useEffect(() => {
+  //   console.log(player);
+  // }, [player]);
 
   return (
     <div
@@ -26,7 +26,7 @@ const Game = ({ columns, rows }) => {
     >
       <Board board={board} />
       <Preview tetrominoes={player.tetrominoes} />
-      <Controller player={player} setPlayer={setPlayer} />
+      <Controller board={board} player={player} setPlayer={setPlayer} />
     </div>
   );
 };

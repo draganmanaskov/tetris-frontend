@@ -5,7 +5,7 @@ const useBoard = ({ rows, columns, player, resetPlayer, addLinesCleared }) => {
   const [board, setBoard] = useState(buildBoard(rows, columns));
 
   useEffect(() => {
-    console.log(board);
+    //console.log(board);
     setBoard((previousBoard) =>
       nextBoard({
         board: previousBoard,
