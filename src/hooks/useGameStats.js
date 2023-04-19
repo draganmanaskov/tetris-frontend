@@ -3,14 +3,17 @@ const initialState = {
   level: 1,
   score: 0,
   time: 0,
-  multiplier: 0,
   highestScore: 0,
   reactStrictModeTracker: 0,
 };
 
-const useGameStats = (player) => {
+const useGameStats = (player, multiplier) => {
   const [gameStats, setGameStats] = useState(initialState);
-  let { multiplier, score } = gameStats;
+  let { score, reactStrictModeTracker } = gameStats;
+
+  useEffect(() => {
+    setGameStatsHandler();
+  }, [multiplier]);
 
   const setGameStatsHandler = useCallback((rowsCleared) => {
     console.log(player);
@@ -21,11 +24,16 @@ const useGameStats = (player) => {
     }
     const scoreEarned = calclateScore(rowsCleared, multiplier);
     console.log(rowsCleared, multiplier, scoreEarned);
+    if (reactStrictModeTracker === 1) {
+      setGameStats((prevState) => ({
+        ...prevState,
+        reactStrictModeTracker: 0,
+      }));
+      return;
+    }
     setGameStats((prevState) => ({
       ...prevState,
-      multiplier,
       score: (prevState.score += scoreEarned),
-      reactStrictModeTracker: prevState.reactStrictModeTracker++,
     }));
   }, []);
 

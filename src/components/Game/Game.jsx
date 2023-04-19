@@ -8,18 +8,24 @@ import useSetDrop from "../../hooks/useSetDrop";
 import useGameStats from "../../hooks/useGameStats";
 import GameStats from "../GameStats/GameStats";
 import usePause from "../../hooks/usePause";
+import useMultiplier from "../../hooks/useMultiplier";
 
 const Game = ({ columns, rows, setGameOver, isPaused, pause }) => {
   const [player, setPlayer, resetPlayer] = usePlayer();
   let addLinesCleared = false;
-  const [gameStats, setGameStatsHandler, resetGameStats] = useGameStats(player);
+  const [multiplier, setMultiplier] = useMultiplier();
+  const [gameStats, setGameStatsHandler, resetGameStats] = useGameStats(
+    player,
+    multiplier
+  );
+
   const [board, setBoard] = useBoard({
     rows,
     columns,
     player,
     resetPlayer,
     addLinesCleared,
-    setGameStatsHandler,
+    setMultiplier,
   });
 
   return (

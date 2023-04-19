@@ -9,12 +9,7 @@ export const buildBoard = (rows, columns) => {
   return board;
 };
 
-export const nextBoard = ({
-  board,
-  player,
-  resetPlayer,
-  setGameStatsHandler,
-}) => {
+export const nextBoard = ({ board, player, resetPlayer, setMultiplier }) => {
   const { tetromino, position } = player;
 
   let newBoard = board.map((row) =>
@@ -26,7 +21,7 @@ export const nextBoard = ({
   let { updatedBoard, rowsCleared } = clearFullRows(newBoard);
 
   if (player.collided) {
-    setGameStatsHandler(rowsCleared);
+    setMultiplier(rowsCleared);
     resetPlayer();
   }
 

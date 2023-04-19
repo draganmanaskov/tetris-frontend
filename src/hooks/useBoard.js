@@ -7,7 +7,7 @@ const useBoard = ({
   player,
   resetPlayer,
   addLinesCleared,
-  setGameStatsHandler,
+  setMultiplier,
 }) => {
   const [board, setBoard] = useState(buildBoard(rows, columns));
 
@@ -18,10 +18,10 @@ const useBoard = ({
         player,
         resetPlayer,
         addLinesCleared,
-        setGameStatsHandler,
+        setMultiplier,
       })
     );
-  }, [player, resetPlayer, setGameStatsHandler]);
+  }, [player, resetPlayer, setMultiplier]);
 
   return [board, setBoard];
 };
