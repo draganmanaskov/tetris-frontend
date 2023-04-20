@@ -37,7 +37,7 @@ export const attemptRotate = (position, board, shape, player, setPlayer) => {
 
   if (isWithin && !hasColision) {
     player.tetromino.shape = newShape;
-    console.log(player.tetromino.shape);
+
     setPlayer({ ...player });
   }
 };
@@ -73,7 +73,7 @@ export const attemptMove = (
   }));
 
   // else {
-  //   console.log(position);
+
   //   if (position.row > 20 - shape.length) {
   //     setPlayer((prevState) => ({ ...prevState, collided: true }));
   //   }
@@ -97,7 +97,6 @@ export const getPosition = (action, position) => {
 
 export const finalTetrominoPosition = (setPlayer) => {
   setPlayer((prevState) => {
-    console.log(prevState);
     return {
       ...prevState,
     };

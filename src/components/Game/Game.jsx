@@ -4,7 +4,7 @@ import Preview from "../Preview/Preview";
 import { usePlayer } from "../../hooks/usePlayer";
 import Controller from "../Contoller/Controller";
 import useBoard from "../../hooks/useBoard";
-import useSetDrop from "../../hooks/useSetDrop";
+
 import useGameStats from "../../hooks/useGameStats";
 import GameStats from "../GameStats/GameStats";
 import usePause from "../../hooks/usePause";

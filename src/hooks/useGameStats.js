@@ -1,41 +1,36 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef, useMemo } from "react";
 const initialState = {
   level: 1,
   score: 0,
   time: 0,
   highestScore: 0,
-  reactStrictModeTracker: 0,
 };
 
 const useGameStats = (player, multiplier) => {
   const [gameStats, setGameStats] = useState(initialState);
-  let { score, reactStrictModeTracker } = gameStats;
+  let { score } = gameStats;
 
-  useEffect(() => {
-    setGameStatsHandler();
-  }, [multiplier]);
+  const prevValueRef = useRef();
 
-  const setGameStatsHandler = useCallback((rowsCleared) => {
-    console.log(player);
-    if (rowsCleared >= 2 && multiplier <= 4) {
-      multiplier++;
-    } else {
-      multiplier = 0;
-    }
-    const scoreEarned = calclateScore(rowsCleared, multiplier);
-    console.log(rowsCleared, multiplier, scoreEarned);
-    if (reactStrictModeTracker === 1) {
-      setGameStats((prevState) => ({
-        ...prevState,
-        reactStrictModeTracker: 0,
-      }));
-      return;
-    }
+  // useEffect(() => {
+  //   setGameStatsHandler(multiplier);
+  // }, [multiplier]);
+
+  const setGameStatsHandler = (multiplier) => {
+    const { combo, rowsClearedThisTurn: rowsCleared } = multiplier;
+
+    const scoreEarned = calclateScore(combo, rowsCleared);
+
     setGameStats((prevState) => ({
       ...prevState,
       score: (prevState.score += scoreEarned),
     }));
-  }, []);
+  };
+
+  const calculation = useMemo(
+    () => setGameStatsHandler(multiplier),
+    [multiplier]
+  );
 
   const resetGameStats = useCallback(() => {
     setGameStats((prev) => ({
@@ -49,9 +44,9 @@ const useGameStats = (player, multiplier) => {
 
 export default useGameStats;
 
-const calclateScore = (rows, multiplier) => {
+const calclateScore = (combo, rowsCleared) => {
   let score = 0;
-  switch (rows) {
+  switch (rowsCleared) {
     case 1:
       score = 100;
       break;
@@ -68,8 +63,9 @@ const calclateScore = (rows, multiplier) => {
       break;
   }
 
-  if (!multiplier) {
+  if (combo === 0) {
     return score;
   }
-  return score * multiplier;
+
+  return score * (combo + 1);
 };

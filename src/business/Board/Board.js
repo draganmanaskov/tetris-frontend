@@ -21,7 +21,13 @@ export const nextBoard = ({ board, player, resetPlayer, setMultiplier }) => {
   let { updatedBoard, rowsCleared } = clearFullRows(newBoard);
 
   if (player.collided) {
-    setMultiplier(rowsCleared);
+    setMultiplier((prevState) => {
+      console.log(prevState, rowsCleared);
+      return {
+        rowsClearedThisTurn: rowsCleared,
+        combo: rowsCleared >= 2 ? (prevState.combo += 1) : 0,
+      };
+    });
     resetPlayer();
   }
 

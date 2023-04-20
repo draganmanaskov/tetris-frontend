@@ -35,7 +35,7 @@ const Controller = ({
   };
 
   const onKeyUp = () => {
-    console.log("key up");
+    // console.log("key up");
   };
 
   return (
