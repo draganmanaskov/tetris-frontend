@@ -22,7 +22,7 @@ export const nextBoard = ({ board, player, resetPlayer, setMultiplier }) => {
 
   if (player.collided) {
     setMultiplier((prevState) => {
-      console.log(prevState, rowsCleared);
+      // console.log(prevState, rowsCleared);
       return {
         rowsClearedThisTurn: rowsCleared,
         combo: rowsCleared >= 2 ? (prevState.combo += 1) : 0,

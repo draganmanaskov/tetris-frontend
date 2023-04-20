@@ -17,6 +17,7 @@ const useGameStats = (player, multiplier) => {
   // }, [multiplier]);
 
   const setGameStatsHandler = (multiplier) => {
+    console.log("test");
     const { combo, rowsClearedThisTurn: rowsCleared } = multiplier;
 
     const scoreEarned = calclateScore(combo, rowsCleared);
@@ -27,10 +28,7 @@ const useGameStats = (player, multiplier) => {
     }));
   };
 
-  const calculation = useMemo(
-    () => setGameStatsHandler(multiplier),
-    [multiplier]
-  );
+  useMemo(() => setGameStatsHandler(multiplier), [multiplier]);
 
   const resetGameStats = useCallback(() => {
     setGameStats((prev) => ({
@@ -67,5 +65,5 @@ const calclateScore = (combo, rowsCleared) => {
     return score;
   }
 
-  return score * (combo + 1);
+  return score * combo;
 };
